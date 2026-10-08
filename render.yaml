@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: nano-motion-api
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app:app --host 0.0.0.0 --port $PORT --workers 1 --no-access-log
+    healthCheckPath: /health
+    disk:
+      name: nano-motion-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: DATABASE_PATH
+        value: /var/data/nano-motion.sqlite
+      - key: OPENAI_PIXEL_ID
+        value: F7KSWkG5KCzsqcVr7nHP18
+      - key: OPENAI_CAPI_VALIDATE_ONLY
+        value: "true"
+      - key: INTEGRATION_SOURCE
+        value: nano_motion_demo
+      - key: ALLOWED_ORIGINS
+        value: https://mikeivanov-code.github.io
+      - key: OPENAI_CONVERSIONS_API_KEY
+        sync: false
