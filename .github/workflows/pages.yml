@@ -23,7 +23,7 @@ jobs:
           python-version: '3.12'
       - run: pip install -r backend/requirements-dev.txt
       - run: ruff check backend && ruff format --check backend && pytest -q
-      - run: npm run check && npm run build
+      - run: npm run check && npm test && npm run build
         env:
           API_URL: ${{ vars.API_URL }}
       - uses: actions/configure-pages@v5

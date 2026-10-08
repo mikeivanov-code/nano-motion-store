@@ -15,6 +15,7 @@ from uuid import UUID
 
 import httpx
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
 from starlette.responses import JSONResponse
@@ -160,7 +161,9 @@ def init_db():
 
 def record(event, order=False):
     payload = transform(event)
-    fingerprint = hashlib.sha256(event.model_dump_json().encode()).hexdigest()
+    fingerprint = hashlib.sha256(
+        event.model_dump_json(exclude={"consent", "oppref", "obref"}).encode()
+    ).hexdigest()
     result = {
         "event_id": str(event.event_id),
         "data": payload["data"],
@@ -177,6 +180,12 @@ def record(event, order=False):
         if old:
             if old["fingerprint"] != fingerprint:
                 raise HTTPException(409, "Event ID already used for a different request")
+            if not event.consent and old["status"] == "pending":
+                db.execute(
+                    "UPDATE records SET status='blocked_consent',payload='{}' WHERE id=?",
+                    (str(event.event_id),),
+                )
+                return {**json.loads(old["result"]), "server_status": "blocked_consent"}
             return {**json.loads(old["result"]), "server_status": old["status"]}
         db.execute(
             "INSERT INTO records(id,fingerprint,result,payload,status) VALUES(?,?,?,?,?)",
@@ -291,6 +300,11 @@ async def safe_validation(request, exc):
     return JSONResponse({"detail": "Invalid request"}, status_code=422)
 
 
+@app.exception_handler(RequestValidationError)
+async def safe_schema_validation(request, exc):
+    return JSONResponse({"detail": "Invalid request"}, status_code=422)
+
+
 @app.get("/health")
 def health():
     with connect() as db:
@@ -311,3 +325,16 @@ def events(event: Event):
 @app.post("/api/checkout")
 def checkout(event: Checkout):
     return record(event, order=True)
+
+
+@app.get("/api/events/{event_id}")
+def event_status(event_id: UUID):
+    with connect() as db:
+        row = db.execute("SELECT status FROM records WHERE id=?", (str(event_id),)).fetchone()
+    if not row:
+        raise HTTPException(404, "Event not found")
+    return {
+        "event_id": str(event_id),
+        "server_status": row["status"],
+        "mode": "validate_only" if VALIDATE_ONLY else "live",
+    }

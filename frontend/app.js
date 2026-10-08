@@ -53,6 +53,7 @@ function checkout() {
   }
   document.querySelector('#checkout-form').onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;button.disabled=true;document.querySelector('#offline').hidden=true;status.textContent='Confirming your mock order…';
     pending ||= envelope('order_created',structuredClone(cart));
+    if(!consent()){pending.consent=false;delete pending.oppref;delete pending.obref;}
     if(!save('nm-checkout-pending',pending)){status.textContent='Enable browser storage to prevent duplicate demo orders.';busy=false;button.disabled=false;return;}
     try{const result=await api('/api/checkout',pending);complete(result);}
     catch(error){busy=false;button.disabled=false;const unavailable=!error.status||error.status>=500;status.textContent=unavailable?'The API is unavailable. Retry uses the same order ID. You may instead complete a clearly labeled local simulation; server measurement will remain unavailable.':'The API rejected this checkout. Review the cart and retry. No order has been confirmed.';document.querySelector('#offline').hidden=!unavailable;}

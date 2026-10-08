@@ -8,7 +8,6 @@ if (new URLSearchParams(location.search).get('debug') === '1') sessionStorage.se
 let history = read('nm-history', []).slice(-80);
 let queue = read('nm-outbox', []);
 let flushing = false;
-let listeners = [];
 export function setConsent(allowed) {
   localStorage.setItem('nm-consent', allowed ? 'yes' : 'no');
   window.oaiq('consent', allowed);
@@ -58,7 +57,8 @@ export function measure(event, data, { server = dual.has(event.name), serverStat
   const allowed = consent() && event.consent;
   let pixel = allowed ? (window.nanoPixelFailed ? 'SDK load failed' : 'queued to SDK; receipt unverified') : 'blocked by consent';
   if (allowed) window.oaiq('measure', event.name, data, { event_id: event.event_id });
-  const row = { name: event.name, id: event.event_id, timestamp: event.timestamp_ms, pixel, server: serverStatus || (server ? (allowed ? (API_URL ? 'queued' : 'unavailable: no API configured') : 'blocked by consent') : 'not used'), mode, dedup: server && allowed, summary: { type: data.type, amount: data.amount, currency: data.currency, contents: data.contents?.map(c => ({ id: c.id, quantity: c.quantity })) } };
+  const dedup = server && allowed && Boolean(API_URL) && !window.nanoPixelFailed && !['demo_not_delivered','blocked_consent','rejected','unavailable; local simulation only'].includes(serverStatus);
+  const row = { name: event.name, id: event.event_id, timestamp: event.timestamp_ms, pixel, server: serverStatus || (server ? (allowed ? (API_URL ? 'queued' : 'unavailable: no API configured') : 'blocked by consent') : 'not used'), mode: server ? mode : 'browser only', dedup, summary: { type: data.type, amount: data.amount, currency: data.currency, contents: data.contents?.map(c => ({ id: c.id, quantity: c.quantity })) } };
   if (debug) { history.push(row); history = history.slice(-80); save('nm-history', history); render(); }
   if (server && allowed && !serverStatus && event.name !== 'order_created' && API_URL) {
     queue.push({ event, attempts: 0, next: 0 }); queue = queue.slice(-100); save('nm-outbox', queue); flush();
@@ -92,4 +92,13 @@ export async function flush() {
 export function refreshDebug() { render(); }
 setInterval(flush, 15000);
 window.addEventListener('online', flush);
-export function listen(fn) { listeners.push(fn); }
+async function pollStatuses() {
+  if (!debug || !API_URL || !consent()) return;
+  for (const row of history.filter(r => r.server === 'pending').slice(-20)) {
+    try {
+      const response = await fetch(API_URL + '/api/events/' + encodeURIComponent(row.id), {signal:AbortSignal.timeout(5000)});
+      if (response.ok) { const result = await response.json(); update(row.id, {server:result.server_status,mode:result.mode}); }
+    } catch { /* Shopping never waits for measurement. */ }
+  }
+}
+setInterval(pollStatuses, 5000);
