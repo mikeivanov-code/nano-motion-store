@@ -26,6 +26,7 @@ Use Node 22+ and Python 3.12. Local checks may use a newer Python; CI verifies P
 python -m venv .venv
 ./.venv/Scripts/python -m pip install -r backend/requirements-dev.txt
 npm run check
+npm test
 $env:API_URL = 'http://localhost:8001'
 npm run build
 ./.venv/Scripts/python -m uvicorn backend.app:app --port 8001 --no-access-log
@@ -105,6 +106,7 @@ python -m ruff check backend
 python -m ruff format --check backend
 python -m pytest -q
 npm run check
+npm test
 npm run build
 ```
 
