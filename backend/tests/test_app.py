@@ -204,3 +204,42 @@ def test_live_status_and_expiry(client, monkeypatch):
     asyncio.run(run())
     with module.connect() as db:
         assert db.execute("SELECT status FROM records").fetchone()[0] == "accepted"
+
+
+def test_revocation_pending_checkout(client, monkeypatch):
+    monkeypatch.setattr(module, "KEY", "test-key-only")
+    raw = body("order_created")
+    assert client.post("/api/checkout", json=raw).json()["server_status"] == "pending"
+    raw["consent"] = False
+    response = client.post("/api/checkout", json=raw)
+    assert response.json()["server_status"] == "blocked_consent"
+    assert client.get("/api/events/" + raw["event_id"]).json()["server_status"] == "blocked_consent"
+    with module.connect() as db:
+        assert db.execute("SELECT payload FROM records").fetchone()[0] == "{}"
+
+
+def test_validation_error_redaction(client):
+    response = client.post("/api/events", json=body() | {"private_input": "do-not-reflect"})
+    assert response.status_code == 422
+    assert "do-not-reflect" not in response.text
+
+
+def test_expired_outbox_never_sent(client, monkeypatch):
+    monkeypatch.setattr(module, "KEY", "test-key-only")
+    raw = body()
+    module.record(module.Event(**raw))
+    with module.connect() as db:
+        payload = json.loads(db.execute("SELECT payload FROM records").fetchone()[0])
+        payload["timestamp_ms"] = 1
+        db.execute("UPDATE records SET payload=?", (json.dumps(payload),))
+
+    def mock(request):
+        pytest.fail("Expired event must never reach the transport")
+
+    async def run():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(mock)) as mocked:
+            await module.deliver(raw["event_id"], mocked)
+
+    asyncio.run(run())
+    with module.connect() as db:
+        assert db.execute("SELECT status FROM records").fetchone()[0] == "expired_not_delivered"

@@ -5,7 +5,7 @@ const route = document.body.dataset.route;
 const main = document.querySelector('main');
 const url = path => new URL(path, root).href;
 const catalog = (await (await fetch(url('catalog.json'))).json()).products;
-const money = amount => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount / 100);
+const money = amount => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(amount / 100);
 let cart = read('nm-cart', []).filter(i => catalog.some(p => p.sku === i.sku && p.sizes.includes(i.size)) && Number.isInteger(i.quantity) && i.quantity > 0 && i.quantity <= 20);
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function persist() { save('nm-cart', cart); document.querySelector('#bag-count').textContent = cart.reduce((n, i) => n + i.quantity, 0); }
