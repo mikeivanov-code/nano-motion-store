@@ -1,0 +1,343 @@
+{
+  "version": 1,
+  "defaultLocale": "en-US",
+  "defaultCurrency": "USD",
+  "locales": [
+    "en-US"
+  ],
+  "currencies": {
+    "USD": {
+      "minorUnitDigits": 2
+    }
+  },
+  "products": [
+    {
+      "sku": "NM-R01",
+      "slug": "aero-run-shell",
+      "name": "Aero Run Shell",
+      "category": "Running",
+      "price": 14800,
+      "currency": "USD",
+      "prices": {
+        "USD": 14800
+      },
+      "description": "Built for the rhythm between effort and ease. The Aero Run Shell pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/aero-run-shell.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "New",
+      "color": "#b5c3b4",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-R02",
+      "slug": "pace-five-short",
+      "name": "Pace Five Short",
+      "category": "Running",
+      "price": 6800,
+      "currency": "USD",
+      "prices": {
+        "USD": 6800
+      },
+      "description": "Built for the rhythm between effort and ease. The Pace Five Short pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/pace-five-short.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "Best Seller",
+      "color": "#343d37",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-R03",
+      "slug": "stride-mesh-tee",
+      "name": "Stride Mesh Tee",
+      "category": "Running",
+      "price": 5800,
+      "currency": "USD",
+      "prices": {
+        "USD": 5800
+      },
+      "description": "Built for the rhythm between effort and ease. The Stride Mesh Tee pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/stride-mesh-tee.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#e8ff63",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-T01",
+      "slug": "form-training-tank",
+      "name": "Form Training Tank",
+      "category": "Training",
+      "price": 4800,
+      "currency": "USD",
+      "prices": {
+        "USD": 4800
+      },
+      "description": "Built for the rhythm between effort and ease. The Form Training Tank pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/form-training-tank.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#bca68b",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-T02",
+      "slug": "interval-track-pant",
+      "name": "Interval Track Pant",
+      "category": "Training",
+      "price": 9800,
+      "currency": "USD",
+      "prices": {
+        "USD": 9800
+      },
+      "description": "Built for the rhythm between effort and ease. The Interval Track Pant pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/interval-track-pant.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#454e48",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-O01",
+      "slug": "zero-gravity-jacket",
+      "name": "Zero Gravity Jacket",
+      "category": "Outerwear",
+      "price": 19800,
+      "currency": "USD",
+      "prices": {
+        "USD": 19800
+      },
+      "description": "Built for the rhythm between effort and ease. The Zero Gravity Jacket pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/zero-gravity-jacket.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "New",
+      "color": "#d7d3c6",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-O02",
+      "slug": "recovery-fleece",
+      "name": "Recovery Fleece",
+      "category": "Outerwear",
+      "price": 12800,
+      "currency": "USD",
+      "prices": {
+        "USD": 12800
+      },
+      "description": "Built for the rhythm between effort and ease. The Recovery Fleece pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/recovery-fleece.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#866b58",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-A01",
+      "slug": "motion-cap",
+      "name": "Motion Cap",
+      "category": "Accessories",
+      "price": 3800,
+      "currency": "USD",
+      "prices": {
+        "USD": 3800
+      },
+      "description": "Built for the rhythm between effort and ease. The Motion Cap pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/motion-cap.svg",
+      "sizes": [
+        "One size"
+      ],
+      "label": "",
+      "color": "#465746",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-A02",
+      "slug": "everyday-tote",
+      "name": "Everyday Tote",
+      "category": "Accessories",
+      "price": 5800,
+      "currency": "USD",
+      "prices": {
+        "USD": 5800
+      },
+      "description": "Built for the rhythm between effort and ease. The Everyday Tote pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/everyday-tote.svg",
+      "sizes": [
+        "One size"
+      ],
+      "label": "",
+      "color": "#c3c1ac",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-Y01",
+      "slug": "flow-high-rise-legging",
+      "name": "Flow High Rise Legging",
+      "category": "Yoga",
+      "price": 8800,
+      "currency": "USD",
+      "prices": {
+        "USD": 8800
+      },
+      "description": "Built for the rhythm between effort and ease. The Flow High Rise Legging pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/flow-high-rise-legging.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "Best Seller",
+      "color": "#6b747d",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-Y02",
+      "slug": "align-studio-bra",
+      "name": "Align Studio Bra",
+      "category": "Yoga",
+      "price": 5800,
+      "currency": "USD",
+      "prices": {
+        "USD": 5800
+      },
+      "description": "Built for the rhythm between effort and ease. The Align Studio Bra pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/align-studio-bra.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#c89e8e",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    },
+    {
+      "sku": "NM-Y03",
+      "slug": "stillness-long-sleeve",
+      "name": "Stillness Long Sleeve",
+      "category": "Yoga",
+      "price": 7800,
+      "currency": "USD",
+      "prices": {
+        "USD": 7800
+      },
+      "description": "Built for the rhythm between effort and ease. The Stillness Long Sleeve pairs a considered silhouette with lightweight performance construction. Move freely, from the first mile to the last stretch.",
+      "image": "assets/images/stillness-long-sleeve.svg",
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "label": "",
+      "color": "#e5dfcd",
+      "material": "Technical recycled-fiber blend",
+      "features": [
+        "Unrestricted movement",
+        "Lightweight feel",
+        "Considered details"
+      ]
+    }
+  ]
+}

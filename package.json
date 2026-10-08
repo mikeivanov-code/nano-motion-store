@@ -1,0 +1,1 @@
+{"name":"nano-motion-store","private":true,"type":"module","scripts":{"build":"node scripts/build.mjs","check":"node --check frontend/app.js && node --check frontend/measurement.js && node --check frontend/pixel.js && node --check scripts/build.mjs"}}
