@@ -67,6 +67,18 @@ if(!route)home();else if(route==='catalog')shop();else if(route==='cart')cartPag
 const consentPanel=document.querySelector('#consent');
 consentPanel.hidden=localStorage.getItem('nm-consent')!==null;
 document.querySelector('#privacy').onclick=()=>{consentPanel.hidden=false;document.querySelector('#accept').focus();};
-document.querySelector('#accept').onclick=()=>{setConsent(true);consentPanel.hidden=true;toast('Measurement enabled for future actions.');};
-document.querySelector('#decline').onclick=()=>{setConsent(false);consentPanel.hidden=true;toast('Optional measurement disabled.');};
+const matchingChoice=document.createElement('label');
+matchingChoice.innerHTML='<input type="checkbox" id="demo-matching"> Use synthetic demo customer for advanced matching (hashed email and customer ID; no real contact details).';
+consentPanel.insertBefore(matchingChoice,document.querySelector('#accept'));
+document.querySelector('#demo-matching').checked=localStorage.getItem('nm-demo-matching')==='yes';
+const identifierHelp=document.createElement('p');
+identifierHelp.textContent='With consent, the OpenAI SDK manages __obref (browser reference) and __oppref (ad attribution). An attribution cookie appears only when a genuine oppref is supplied. Advanced matching is optional and uses fictional identifiers; it does not demonstrate a real customer match.';
+consentPanel.append(identifierHelp);
+document.querySelector('#demo-matching').onchange=async e=>{
+  if(!consent())return;
+  localStorage.setItem('nm-demo-matching',e.target.checked?'yes':'no');
+  location.reload(); // Fresh initialization removes old request-scoped matching data.
+};
+document.querySelector('#accept').onclick=()=>{setConsent(true);const enabled=document.querySelector('#demo-matching').checked;localStorage.setItem('nm-demo-matching',enabled?'yes':'no');if(enabled){window.oaiq('init',{pixelId:'F7KSWkG5KCzsqcVr7nHP18',user:window.nanoDemoUser});window.nanoMatchingEnabled=true;}consentPanel.hidden=true;toast('Measurement enabled for future actions.');refreshDebug();};
+document.querySelector('#decline').onclick=()=>{setConsent(false);location.reload();};
 refreshDebug();flush();

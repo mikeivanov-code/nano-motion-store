@@ -136,3 +136,11 @@ Future genuine paid memberships can use `subscription_created` and genuine trial
 - [Conversion setup and recent Pixel events](https://developers.openai.com/ads/api-reference/conversion-setup)
 
 Implementation follows these sources as retrieved October 7, 2026. See `docs/measurement-plan.md` and `docs/demo-script.md` for the business design and presentation.
+# Cookie identifiers and synthetic advanced matching
+
+Open **Measurement preferences** and select **Use synthetic demo customer**, then allow measurement. The Pixel receives the documented `user.email_sha256` and `user.external_id_sha256` at initialization. Fixtures are the normalized fictional email `demo.shopper@example.com` and stable synthetic customer ID `nano-motion-synthetic-customer-001`; only their SHA-256 hashes are supplied. No real customer data is collected. This demonstrates manual advanced matching, not a verified customer match or account-controlled automatic advanced matching.
+
+The SDK creates/reuses `__obref` with measurement consent and captures genuine `oppref` attribution links in `__oppref`. The application never fabricates attribution identifiers. An absent `__oppref` is expected for ordinary visits. Existing consent-gated backend envelopes forward identifiers unchanged when configured; the public Pages site still has no CAPI service.
+
+The debug panel shows cookie presence and configured matching field names, never cookie values or matching hashes. Disabling matching or declining measurement reloads the page so old request-scoped user data cannot survive into future events. Declining also disables the synthetic profile and lets the SDK remove its cookies. Verify matching by inspecting the browser network payload after opting in; actual match rates and attribution require platform-side verification. See the [official Pixel documentation](https://developers.openai.com/ads/measurement-pixel).
+

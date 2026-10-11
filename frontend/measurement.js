@@ -11,6 +11,7 @@ let flushing = false;
 export function setConsent(allowed) {
   localStorage.setItem('nm-consent', allowed ? 'yes' : 'no');
   window.oaiq('consent', allowed);
+  if (!allowed) localStorage.setItem('nm-demo-matching', 'no');
   if (!allowed) { queue = []; save('nm-outbox', queue); }
   else flush();
 }
@@ -44,6 +45,9 @@ function render() {
   panel.replaceChildren();
   const heading = document.createElement('h2'); heading.textContent = 'Measurement lab'; panel.append(heading);
   const note = document.createElement('p'); note.textContent = 'SDK queued ≠ received. Server pending ≠ accepted. Deduplication expected only when both channels send the same ID.'; panel.append(note);
+  const identifiers = document.createElement('p');
+  identifiers.textContent = `SDK cookies: __obref ${consent() && cookie('__obref') ? 'present' : 'absent'}; __oppref ${consent() && cookie('__oppref') ? 'present' : 'absent (requires a genuine attribution link)'}. Advanced matching: ${consent() && window.nanoMatchingEnabled ? 'synthetic email_sha256 + external_id_sha256 configured; matching unverified' : 'off'}. Cookie values and hashes are hidden.`;
+  panel.append(identifiers);
   const clear = document.createElement('button'); clear.textContent = 'Clear debug history'; clear.onclick = () => { history = []; save('nm-history', []); render(); }; panel.append(clear);
   for (const row of history.slice().reverse()) {
     const card = document.createElement('article');

@@ -49,3 +49,18 @@ assert.equal(bootstrapWindow.oaiq.q[0][1],false);
 assert.equal(bootstrapWindow.oaiq.q[1][0],'init');
 assert.equal(bootstrapWindow.oaiq.q[1][1].pixelId,'F7KSWkG5KCzsqcVr7nHP18');
 console.log('Pixel bootstrap checks passed: consent before initialization, exact Pixel ID, official queue.');
+for (const [granted, selected] of [[false,true],[true,false],[true,true]]) {
+  const w={};
+  const ctx=vm.createContext({window:w,document:{createElement:()=>({}),getElementsByTagName:()=>[{parentNode:{insertBefore:()=>{}}}]},localStorage:{getItem:k=>k==='nm-consent'?(granted?'yes':'no'):(selected?'yes':'no')},location:{search:''},URLSearchParams});
+  Object.defineProperty(ctx,'oaiq',{get:()=>w.oaiq});
+  vm.runInContext(await readFile('frontend/pixel.js','utf8'),ctx);
+  const init=w.oaiq.q[1][1];
+  assert.equal(Boolean(init.user),granted&&selected);
+  if(init.user){
+    const digest=async value=>Buffer.from(await webcrypto.subtle.digest('SHA-256',new TextEncoder().encode(value))).toString('hex');
+    assert.equal(init.user.email_sha256,await digest('demo.shopper@example.com'));
+    assert.equal(init.user.external_id_sha256,await digest('nano-motion-synthetic-customer-001'));
+    assert.equal(JSON.stringify(init).includes('demo.shopper@example.com'),false);
+  }
+}
+console.log('Synthetic matching checks passed: explicit opt-in plus consent required, correct SHA-256 fixtures, no raw email.');
